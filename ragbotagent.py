@@ -38,7 +38,7 @@ def get_text_chunks(raw_text):
 
 def create_faiss_index(text_chunks):
     model_name = "BAAI/bge-small-en"
-    model_kwargs = {"device": "cuda"}
+    model_kwargs = {"device": "cpu"}
     encode_kwargs = {"normalize_embeddings": True}
     embeddings = HuggingFaceBgeEmbeddings(model_name=model_name, 
                                           model_kwargs=model_kwargs, 
