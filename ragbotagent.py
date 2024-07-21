@@ -75,7 +75,7 @@ def get_conversation_chain(vector_store, groq_api_key):
 
 def get_web_agent(replicate_api_token):
     llm = Replicate(model="meta/meta-llama-3-70b-instruct", api_token=replicate_api_token, streaming=True, callbacks=[StreamingStdOutCallbackHandler()])
-    tools = load_tools(["llm-math","wikipedia"], llm=llm)
+    tools = load_tools(["wikipedia"], llm=llm)
     memory = ConversationBufferMemory(memory_key="chat_history")
     ZERO_SHOT_REACT_DESCRIPTION = initialize_agent(
         agent='zero-shot-react-description',
