@@ -1,7 +1,7 @@
 import os
 import tempfile
 import streamlit as st
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 from pdfminer.high_level import extract_text
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import FAISS
@@ -114,12 +114,12 @@ def main():
 
         st.subheader("Start Model🧠")
         
-        # Check for secrets.toml file and use input fields if not found
-        # secrets_exists = os.path.exists(os.path.join(os.getcwd(), ".streamlit", "secrets.toml")) or \
-        #                  os.path.exists(os.path.join(os.path.expanduser("~"), ".streamlit", "secrets.toml"))
+        Check for secrets.toml file and use input fields if not found
+        secrets_exists = os.path.exists(os.path.join(os.getcwd(), ".streamlit", "secrets.toml")) or \
+                         os.path.exists(os.path.join(os.path.expanduser("~"), ".streamlit", "secrets.toml"))
 
-        # if secrets_exists:
-        #     load_dotenv(os.path.join(os.getcwd(), ".streamlit", "secrets.toml"))
+        if secrets_exists:
+            load_dotenv(os.path.join(os.getcwd(), ".streamlit", "secrets.toml"))
         
         replicate_api_token = os.getenv("REPLICATE_API_TOKEN")
         groq_api_key = os.getenv("GROQ_API_KEY")
