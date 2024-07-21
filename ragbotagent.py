@@ -114,7 +114,7 @@ def main():
 
         st.subheader("Start Model🧠")
         
-        Check for secrets.toml file and use input fields if not found
+        # Check for secrets.toml file and use input fields if not found
         secrets_exists = os.path.exists(os.path.join(os.getcwd(), ".streamlit", "secrets.toml")) or \
                          os.path.exists(os.path.join(os.path.expanduser("~"), ".streamlit", "secrets.toml"))
 
