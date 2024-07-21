@@ -1,3 +1,4 @@
+
 import os
 import tempfile
 import streamlit as st
@@ -145,6 +146,7 @@ def main():
                 st.success('Groq API key provided!', icon='✅')
         
         os.environ['REPLICATE_API_TOKEN'] = replicate_api_token
+        os.environ['GROQ_API_KEY'] = groq_api_key
 
         if st.button("Start Inference", key="start_inference") and docs and replicate_api_token and groq_api_key:
             with st.spinner("Processing..."):
