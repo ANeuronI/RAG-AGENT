@@ -1,9 +1,9 @@
 streamlit==1.36.0
 pdfminer.six==20221105
-langchain==0.0.225
-langchain-community==0.0.6
+langchain
+langchain-community
 faiss-cpu==1.7.3
-langchain-groq==0.1.0
+langchain-groq
 python-dotenv==1.0.0
 langchain-huggingface
 
