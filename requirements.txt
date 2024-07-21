@@ -6,4 +6,4 @@ faiss-cpu==1.7.3
 langchain-groq
 python-dotenv==1.0.0
 langchain-huggingface
-
+wikipedia
