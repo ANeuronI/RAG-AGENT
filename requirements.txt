@@ -1,0 +1,8 @@
+streamlit==1.36.0
+pdfminer.six==20221105
+langchain==0.0.225
+langchain-community==0.0.7
+faiss-cpu==1.7.3
+langchain-groq==0.1.0
+python-dotenv==1.0.0
+HuggingFaceBgeEmbeddings @ git+https://github.com/langchain-ai/langchain-hub@main#egg=langchain_community.embeddings.huggingface_bge_embeddings
