@@ -13,7 +13,7 @@ Welcome to the Multi-Model LLM Agent repository! This repository hosts two versi
 - Enhanced RAG model with memory for retaining context across conversations
 - Multi-query retrieval for handling complex information needs
 
-[Explore Version 2 (Multi-Model Agent)](https://)
+[Explore Version 2 (Multi-Model Agent)](https://multi-model-agent.streamlit.app/)
 
 ## How to Use This Model
 
