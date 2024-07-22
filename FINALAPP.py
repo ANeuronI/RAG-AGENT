@@ -152,7 +152,7 @@ def main():
         if groq_api_key:
             st.success('Groq API key already provided!', icon='✅')
         else:
-            groq_api_key = st.text_input(placeholder='Enter Groq API key:', type='password', key='groq_api_key')
+            groq_api_key = st.text_input('Enter Groq API key:', type='password', key='groq_api_key')
             if groq_api_key and (groq_api_key.startswith('gsk_') and len(groq_api_key) == 56):
                 os.environ['GROQ_API_KEY'] = groq_api_key
                 st.success('Groq API key provided!', icon='✅')
