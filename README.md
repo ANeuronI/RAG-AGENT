@@ -24,9 +24,8 @@ Before using the Multi-Model Agent, you need to obtain API keys from the followi
 - **Replicate API Keys:** Obtain from [Replicate](https://replicate.com/meta/meta-llama-3-70b-instruct)
 
 ### Integration Instructions
-1. **API Key Setup:** Insert your obtained API keys into the designated configuration files.
+1. **API Key Setup:** Insert your obtained API keys into the designated configuration.
 2. **Usage Guide:** Refer to our detailed documentation for integrating the API keys and utilizing the Multi-Model Agent effectively.
 
 ## Notes
 - **Security:** Keep your API keys secure and adhere to the terms of service of each provider.
-- **Documentation:** For detailed usage instructions and examples, please refer to the accompanying documentation or contact our support team.
