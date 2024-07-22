@@ -9,3 +9,4 @@ langchain-huggingface
 wikipedia
 replicate
 numexpr
+google-api-python-client>=2.100.0
