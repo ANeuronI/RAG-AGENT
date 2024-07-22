@@ -38,7 +38,7 @@ def get_text_chunks(raw_text):
 
 def create_faiss_index(text_chunks):
     model_name = "BAAI/bge-small-en"
-    model_kwargs = {"device": "cuda"}
+    model_kwargs = {"device": "cpu"}
     encode_kwargs = {"normalize_embeddings": True}
     embeddings = HuggingFaceBgeEmbeddings(model_name=model_name, 
                                           model_kwargs=model_kwargs, 
@@ -75,7 +75,7 @@ def get_conversation_chain(vector_store, groq_api_key):
 
 def get_web_agent(replicate_api_token):
     llm = Replicate(model="meta/meta-llama-3-70b-instruct", api_token=replicate_api_token, streaming=True, callbacks=[StreamingStdOutCallbackHandler()])
-    tools = load_tools(["llm-math","wikipedia"], llm=llm)
+    tools = load_tools(["wikipedia"], llm=llm)
     memory = ConversationBufferMemory(memory_key="chat_history")
     ZERO_SHOT_REACT_DESCRIPTION = initialize_agent(
         agent='zero-shot-react-description',

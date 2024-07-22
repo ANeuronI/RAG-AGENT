@@ -1,0 +1,10 @@
+streamlit==1.36.0
+pdfminer.six==20221105
+langchain
+langchain-community
+faiss-cpu==1.7.3
+langchain-groq
+python-dotenv==1.0.0
+langchain-huggingface
+wikipedia
+replicate
