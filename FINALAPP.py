@@ -14,51 +14,42 @@ from langchain.prompts import PromptTemplate
 from langchain_groq import ChatGroq
 from langchain.agents import initialize_agent, load_tools
 
-
-
-# from langchain.agents import AgentType
-# Load environment variables from .env file
+# Check if the secrets file exists and load it
 secrets_exists = os.path.exists(os.path.join(os.getcwd(), ".streamlit", "secrets.toml")) or \
-                         os.path.exists(os.path.join(os.path.expanduser("~"), ".streamlit", "secrets.toml"))
+                 os.path.exists(os.path.join(os.path.expanduser("~"), ".streamlit", "secrets.toml"))
 
 if secrets_exists:
     load_dotenv(os.path.join(os.getcwd(), ".streamlit", "secrets.toml"))
 
-# GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-
-GOOGLE_API_KEY  = os.getenv("GOOGLE_API_KEY")
-GOOGLE_CSE_ID = os.getenv("GOOGLE_CSE_ID")
-
-
+# Function to extract text from PDFs
 def extract_text_from_pdfs(docs):
     text = ""
     for doc in docs:
         try:
-            # Save the uploaded file to a temporary file
             with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_file:
                 tmp_file.write(doc.getbuffer())
                 tmp_file_path = tmp_file.name
 
-            # Extract text using pdfminer.six
             extracted_text = extract_text(tmp_file_path)
             text += extracted_text
 
         except Exception as e:
             st.error(f"Error processing {doc.name}: {e}")
         finally:
-            # Clean up temporary file
             os.remove(tmp_file_path)
 
     return text
 
+# Function to split text into chunks
 def get_text_chunks(raw_text):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=50)
     chunks = text_splitter.split_text(raw_text)
     return chunks
 
+# Function to create FAISS index
 def create_faiss_index(text_chunks):
     model_name = "BAAI/bge-small-en"
-    model_kwargs = {"device": "cpu"}  # Specify "cuda" to use GPU if available
+    model_kwargs = {"device": "cpu"}
     encode_kwargs = {"normalize_embeddings": True}
     embeddings = HuggingFaceBgeEmbeddings(model_name=model_name, 
                                           model_kwargs=model_kwargs, 
@@ -67,6 +58,7 @@ def create_faiss_index(text_chunks):
     vector_store = FAISS.from_texts(text_chunks, embeddings)
     return vector_store
 
+# Function to get the conversation chain
 def get_conversation_chain(vector_store, groq_api_key):
     llm = ChatGroq(
         temperature=0.7,
@@ -98,6 +90,7 @@ def get_conversation_chain(vector_store, groq_api_key):
     )
     return conversation_chain, llm
 
+# Function to get the web agent
 def get_web_agent(groq_api_key):
     llm = ChatGroq(
         temperature=0.7,
@@ -106,12 +99,12 @@ def get_web_agent(groq_api_key):
         streaming=True,
         verbose=True
     )
-    # can create  coustom tools
+    # can create custom tools
     tools = load_tools([], llm=llm)
     from tools import summarizer_tool
     tools.append(summarizer_tool)
     
-    additional_tools = load_tools(["llm-math", "google-search"], llm=llm) # this one is for official google 
+    additional_tools = load_tools(["llm-math", "google-search"], llm=llm)
     tools.extend(additional_tools)
     
     memory = ConversationBufferMemory(memory_key="chat_history")
@@ -126,8 +119,7 @@ def get_web_agent(groq_api_key):
     )
     return ZERO_SHOT_REACT_DESCRIPTION
 
-
-
+# Main function
 def main():
     if "conversation" not in st.session_state:
         st.session_state.conversation = None
@@ -160,15 +152,13 @@ def main():
         if groq_api_key:
             st.success('Groq API key already provided!', icon='✅')
         else:
-            groq_api_key = st.text_input('Enter Groq API key:', type='password', key='groq_api_key')
+            groq_api_key = st.text_input(placeholder='Enter Groq API key:', type='password', key='groq_api_key')
             if groq_api_key and (groq_api_key.startswith('gsk_') and len(groq_api_key) == 56):
+                os.environ['GROQ_API_KEY'] = groq_api_key
                 st.success('Groq API key provided!', icon='✅')
             else:
                 st.warning('Please enter a valid Groq API key!', icon='⚠️')
         
-
-        os.environ['GROQ_API_KEY'] = groq_api_key
-    
         if st.button("Start Inference", key="start_inference") and docs:
             with st.spinner("Processing..."):
                 raw_text = extract_text_from_pdfs(docs)
@@ -193,9 +183,9 @@ def main():
                 with st.chat_message("assistant"):
                     st.write(message["content"])
         
-        input_disabled = groq_api_key
-              
-        if prompt := st.chat_input("Ask your question here..." , disabled=not input_disabled):
+        input_disabled = groq_api_key is None
+        
+        if prompt := st.chat_input("Ask your question here..." , disabled=input_disabled):
             st.session_state.chat_history.append({"role": "user", "content": prompt})
             with st.chat_message("user"):
                 st.write(prompt)
@@ -214,4 +204,3 @@ def main():
                             
 if __name__ == '__main__':
     main()
-
